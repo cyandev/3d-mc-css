@@ -1,0 +1,251 @@
+* {
+  transform-style: preserve-3d;
+  box-sizing: border-box;
+}
+
+.model-element {
+  position: absolute;
+  bottom: 0;
+}
+
+#model-container {
+  position: relative;
+  border: 1px solid black;
+  width: calc(var(--u) * 40);
+  height: calc(var(--u) * 50);
+  perspective: 12in;
+  --u: 1vw;
+}
+
+#model-base {
+  background: gray;
+  width: calc(var(--u) * 16);
+  height: calc(var(--u) * 16);
+  border-radius: calc(var(--u) * 8);
+  position: absolute;
+  bottom: 0;
+  left: calc((100% - var(--u) * 16)/2);
+  transform: rotateY(0) rotateX(90deg) translateZ(calc(var(--u) * -5));
+  animation-name: spin;
+  animation-duration: 10s;
+  animation-iteration-count: infinite;
+}
+
+
+/* part positioning */
+.leg {
+  --wu: 4;
+  --hu: 4;
+  --du: 12;
+  width: calc(var(--wu) * 1px);
+  height: calc(var(--hu) * 1px);
+  left: 50%;
+  top: 50%;
+  --offset-x: 0px;
+  --offset-y: -16px
+}
+#leg-right {
+  transform: translate(-50%, -50%) scale3d(var(--upx),var(--upx),var(--upx)) translateX(-2px);
+  --invert: 0;
+}
+
+#leg-left {
+  transform: translate(-50%, -50%) translate(-50%, -50%) scale3d(var(--upx),var(--upx),var(--upx)) translateX(2px);
+  --invert: 1;
+}
+
+#torso {
+  --wu: 8;
+  --hu: 4;
+  --du: 12;
+  width: calc(var(--wu) * 1px);
+  height: calc(var(--hu) * 1px);
+  left: 50%;
+  top: 50%;
+  --offset-x: -16px;
+  --offset-y: -16px;
+  transform: translate(-50%, -50%) scale3d(var(--upx),var(--upx),var(--upx)) translateZ(12px);
+  --invert: 0;
+}
+#head {
+  --wu: 8;
+  --hu: 8;
+  --du: 8;
+  width: calc(var(--wu) * 1px);
+  height: calc(var(--hu) * 1px);
+  left: 50%;
+  top: 50%;
+  --offset-x: 0px;
+  --offset-y: 0px;
+  transform: translate(-50%, -50%) scale3d(var(--upx),var(--upx),var(--upx)) translateZ(24px);
+  --invert: 0;
+}
+.arm {
+  --wu: 4;
+  --hu: 4;
+  --du: 12;
+  width: calc(var(--wu) * 1px);
+  height: calc(var(--hu) * 1px);
+  left: 50%;
+  top: 50%;
+  --offset-x: -40px;
+  --offset-y: -16px
+}
+#arm-right {
+  transform: translate(-50%, -50%) scale3d(var(--upx),var(--upx),var(--upx)) translate3d(-6px,0,12px);
+  --invert: 0;
+}
+
+#arm-left {
+  transform: translate(-50%, -50%) translate(-50%, -50%) scale3d(var(--upx),var(--upx),var(--upx)) translate3d(6px,0,12px);
+  --invert: 1;
+}
+
+/* general face positioning */
+.face {
+  position: absolute;
+  image-rendering: pixelated;
+  object-fit: none;
+  transform-origin: bottom center;
+  background: black;
+}
+
+.front {
+  height: calc(var(--du) * 1px);
+  width: calc(var(--wu) * 1px);
+  bottom: 0;
+  left: 0;
+  transform: scaleX(calc(1 - 2 * var(--invert))) rotateX(-90deg);
+}
+.back {
+  height: calc(var(--du) * 1px);
+  width: calc(var(--wu) * 1px);
+  top: 0;
+  left: 0;
+  transform: scaleX(calc(1 - 2 * var(--invert))) rotateX(-90deg) rotateY(180deg) translateZ(calc(1px * var(--du)));
+}
+.left {
+  height: calc(var(--du) * 1px);
+  width: calc(var(--hu) * 1px);
+  bottom: 0;
+  left: 0;
+  transform: scaleX(calc(1 - 2 * var(--invert))) rotateX(-90deg) translateZ(calc(var(--hu) * -.5px)) rotateY(90deg) translateZ(calc((var(--wu) * 1px) - (var(--hu) * .5px))); /*rotateX(-90deg) translateZ(calc(var(--hu) * -.5px)) rotateY(-90deg) translateZ(calc(var(--wu) * 1px - var(--hu) * .5px));*/
+}
+.right {
+  height: calc(var(--du) * 1px);
+  width: calc(var(--hu) * 1px);
+  bottom: 0;
+  left: 0;
+  transform: scaleX(calc(1 - 2 * var(--invert))) rotateX(-90deg) translateZ(calc(var(--hu) * -.5px)) rotateY(-90deg) translateZ(calc(var(--hu) * .5px));  
+
+}
+.top {
+  width: calc(var(--wu) * 1px);
+  height: calc(var(--hu) * 1px);
+  transform: translateZ(calc(var(--du) * 1px));
+  top: 0;
+  left: 0;
+}
+.bottom {
+  width: calc(var(--wu) * 1px);
+  height: calc(var(--hu) * 1px);
+  top: 0;
+  left: 0;
+}
+
+/* textures */
+.leg .front {
+  object-position: calc(var(--offset-x) - 4px) calc(var(--offset-y) - 4px);
+}
+.leg .back {
+  object-position: calc(var(--offset-x) - 12px) calc(var(--offset-y) - 4px);
+}
+.leg .top {
+  object-position: calc(var(--offset-x) - 4px) calc(var(--offset-y))
+}
+.leg .bottom {
+  object-position: calc(var(--offset-x) - 8px) calc(var(--offset-y))
+}
+.leg .right {
+  object-position: calc(var(--offset-x)) calc(var(--offset-y) - 4px)
+}
+.leg .left {
+  object-position: calc(var(--offset-x) - 8px) calc(var(--offset-y) - 4px)
+}
+
+#torso .front {
+  object-position: calc(var(--offset-x) - 4px) calc(var(--offset-y) - 4px);
+}
+#torso .back {
+  object-position: calc(var(--offset-x) - 16px) calc(var(--offset-y) - 4px);
+}
+#torso .top {
+  object-position: calc(var(--offset-x) - 4px) calc(var(--offset-y) - 0px);
+}
+#torso .bottom {
+  object-position: calc(var(--offset-x) - 12px) calc(var(--offset-y) - 0px);
+}
+#torso .right {
+  object-position: calc(var(--offset-x) - 0px) calc(var(--offset-y) - 4px);
+}
+#torso .left {
+  object-position: calc(var(--offset-x) - 12px) calc(var(--offset-y) - 4px);
+}
+
+#head .face {
+  background-image: url("skin.png");
+}
+#head .front {
+  background-position: calc(var(--offset-x) - 8px) calc(var(--offset-y) - 8px);
+  object-position: calc(var(--offset-x) - 40px) calc(var(--offset-y) - 8px);
+}
+#head .back {
+  background-position: calc(var(--offset-x) - 24px) calc(var(--offset-y) - 8px);
+  object-position: calc(var(--offset-x) - 56px) calc(var(--offset-y) - 8px);
+}
+#head .top {
+  background-position: calc(var(--offset-x) - 8px) calc(var(--offset-y) - 0px);
+  object-position: calc(var(--offset-x) - 40px) calc(var(--offset-y) - 0px);
+}
+#head .bottom {
+  background-position: calc(var(--offset-x) - 16px) calc(var(--offset-y) - 0px);
+  object-position: calc(var(--offset-x) - 48px) calc(var(--offset-y) - 0px);
+}
+#head .right {
+  background-position: calc(var(--offset-x) - 0px) calc(var(--offset-y) - 8px);
+  object-position: calc(var(--offset-x) - 32px) calc(var(--offset-y) - 8px);
+}
+#head .left {
+  background-position: calc(var(--offset-x) - 16px) calc(var(--offset-y) - 8px);
+  object-position: calc(var(--offset-x) - 48px) calc(var(--offset-y) - 8px);
+}
+
+.arm .front {
+  object-position: calc(var(--offset-x) - 4px) calc(var(--offset-y) - 4px);
+}
+.arm .back {
+  object-position: calc(var(--offset-x) - 12px) calc(var(--offset-y) - 4px);
+}
+.arm .top {
+  object-position: calc(var(--offset-x) - 4px) calc(var(--offset-y) - 0px);
+}
+.arm .bottom {
+  object-position: calc(var(--offset-x) - 8px) calc(var(--offset-y) - 0px);
+}
+.arm .right {
+  object-position: calc(var(--offset-x) - 0px) calc(var(--offset-y) - 4px);
+}
+.arm .left {
+  object-position: calc(var(--offset-x) - 8px) calc(var(--offset-y) - 4px);
+}
+
+/* #disp {
+  height: 32px;
+  width: 32px;
+  transform-origin: top left;
+  transform: scale(var(--upx));
+  image-rendering: pixelated;
+  object-fit: none;
+  object-position: -16px -16px;
+  position: absolute;
+} */
